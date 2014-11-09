@@ -11,6 +11,7 @@
 		4352A8E51A0AEABF001EFFE3 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4352A8E41A0AEABF001EFFE3 /* CloudKit.framework */; };
 		43A35AC41A093ADC00FBC569 /* AddReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A35AC31A093ADC00FBC569 /* AddReminderViewController.swift */; };
 		43A35AC61A0940E300FBC569 /* ReminderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A35AC51A0940E300FBC569 /* ReminderTableViewController.swift */; };
+		43BDC1C11A0F6BC200CAB5FF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BDC1C01A0F6BC200CAB5FF /* TabBarController.swift */; };
 		43EE07B61A07EF550041B6C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE07B51A07EF550041B6C9 /* AppDelegate.swift */; };
 		43EE07B91A07EF550041B6C9 /* MapFence.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43EE07B71A07EF550041B6C9 /* MapFence.xcdatamodeld */; };
 		43EE07BB1A07EF550041B6C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EE07BA1A07EF550041B6C9 /* ViewController.swift */; };
@@ -37,6 +38,7 @@
 		4352A8E41A0AEABF001EFFE3 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		43A35AC31A093ADC00FBC569 /* AddReminderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddReminderViewController.swift; sourceTree = "<group>"; };
 		43A35AC51A0940E300FBC569 /* ReminderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReminderTableViewController.swift; sourceTree = "<group>"; };
+		43BDC1C01A0F6BC200CAB5FF /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		43EE07B01A07EF550041B6C9 /* MapFence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapFence.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43EE07B41A07EF550041B6C9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		43EE07B51A07EF550041B6C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +73,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		43D75F791A0F178E000F647F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4313E6311A0A8325006CD862 /* Reminder.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		43D75F7B1A0F17A3000F647F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				43EE07C11A07EF550041B6C9 /* LaunchScreen.xib */,
+				43EE07BC1A07EF550041B6C9 /* Main.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		43D75F7C1A0F17B2000F647F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				43EE07BA1A07EF550041B6C9 /* ViewController.swift */,
+				43A35AC51A0940E300FBC569 /* ReminderTableViewController.swift */,
+				43A35AC31A093ADC00FBC569 /* AddReminderViewController.swift */,
+				43EE07B51A07EF550041B6C9 /* AppDelegate.swift */,
+				4352A8E31A0AEAB6001EFFE3 /* MapFence.entitlements */,
+				43BDC1C01A0F6BC200CAB5FF /* TabBarController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		43EE07A71A07EF550041B6C9 = {
 			isa = PBXGroup;
 			children = (
@@ -94,17 +126,10 @@
 		43EE07B21A07EF550041B6C9 /* MapFence */ = {
 			isa = PBXGroup;
 			children = (
-				4352A8E31A0AEAB6001EFFE3 /* MapFence.entitlements */,
-				43EE07B51A07EF550041B6C9 /* AppDelegate.swift */,
-				43EE07BA1A07EF550041B6C9 /* ViewController.swift */,
-				43EE07BC1A07EF550041B6C9 /* Main.storyboard */,
-				43EE07BF1A07EF550041B6C9 /* Images.xcassets */,
-				43EE07C11A07EF550041B6C9 /* LaunchScreen.xib */,
-				43EE07B71A07EF550041B6C9 /* MapFence.xcdatamodeld */,
-				4313E6311A0A8325006CD862 /* Reminder.swift */,
+				43D75F791A0F178E000F647F /* Model */,
+				43D75F7B1A0F17A3000F647F /* View */,
+				43D75F7C1A0F17B2000F647F /* Controller */,
 				43EE07B31A07EF550041B6C9 /* Supporting Files */,
-				43A35AC31A093ADC00FBC569 /* AddReminderViewController.swift */,
-				43A35AC51A0940E300FBC569 /* ReminderTableViewController.swift */,
 			);
 			path = MapFence;
 			sourceTree = "<group>";
@@ -112,6 +137,8 @@
 		43EE07B31A07EF550041B6C9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				43EE07B71A07EF550041B6C9 /* MapFence.xcdatamodeld */,
+				43EE07BF1A07EF550041B6C9 /* Images.xcassets */,
 				43EE07B41A07EF550041B6C9 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -247,6 +274,7 @@
 				43EE07BB1A07EF550041B6C9 /* ViewController.swift in Sources */,
 				43EE07B91A07EF550041B6C9 /* MapFence.xcdatamodeld in Sources */,
 				4313E6321A0A8325006CD862 /* Reminder.swift in Sources */,
+				43BDC1C11A0F6BC200CAB5FF /* TabBarController.swift in Sources */,
 				43A35AC61A0940E300FBC569 /* ReminderTableViewController.swift in Sources */,
 				43EE07B61A07EF550041B6C9 /* AppDelegate.swift in Sources */,
 			);

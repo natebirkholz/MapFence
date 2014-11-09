@@ -8,15 +8,25 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
+  var locationManager : CLLocationManager?
 
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    // Override point for customization after application launch.
+
+    if (UIApplication.instancesRespondToSelector(Selector("RegisterUserNotificationSettings:"))) {
+      let types = UIUserNotificationType.Alert | UIUserNotificationType.Badge
+      application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: types, categories: nil))
+    }
+
+
+
+
     return true
   }
 

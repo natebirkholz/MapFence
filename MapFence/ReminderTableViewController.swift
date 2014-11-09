@@ -8,21 +8,33 @@
 
 import UIKit
 import CoreData
+import CoreLocation
+import MapKit
 
 
 class ReminderTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+
+/////////////////////////////////
+// MARK: Properties
+/////////////////////////////////
 
   @IBOutlet weak var tableView: UITableView!
 
   var managedObjectContext : NSManagedObjectContext!
   var fetchedResultsController: NSFetchedResultsController!
+  var locationManager : CLLocationManager!
 
+/////////////////////////////////
+// MARK: Lifecycle
+/////////////////////////////////
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+
       let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
       self.managedObjectContext = appDelegate.managedObjectContext
+      self.locationManager = appDelegate.locationManager
       self.tableView.dataSource = self
       self.tableView.delegate = self
 
@@ -38,7 +50,6 @@ class ReminderTableViewController: UIViewController, UITableViewDelegate, UITabl
       if !self.fetchedResultsController.performFetch(&error) {
         println("error!!")
       }
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,9 +60,17 @@ class ReminderTableViewController: UIViewController, UITableViewDelegate, UITabl
     NSNotificationCenter.defaultCenter().removeObserver(self)
   }
 
+/////////////////////////////////
+// MARK: Observers
+/////////////////////////////////
+
   func didGetCloudChanges(notification : NSNotification) {
     self.managedObjectContext.mergeChangesFromContextDidSaveNotification(notification)
   }
+
+/////////////////////////////////
+// MARK: TableView
+/////////////////////////////////
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return self.fetchedResultsController.fetchedObjects?.count ?? 0
@@ -70,7 +89,42 @@ class ReminderTableViewController: UIViewController, UITableViewDelegate, UITabl
     self.tableView.reloadData()
   }
 
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let reminder = self.fetchedResultsController.fetchedObjects?[indexPath.row] as Reminder
+    var coordinate = CLLocationCoordinate2DMake(CLLocationDegrees(reminder.reminderLat), CLLocationDegrees(reminder.reminderLon))
+    var radius = CLLocationDistance(reminder.reminderRadius)
+    var identifier = reminder.reminderName as String!
 
+    var selectedAnnotation = MKPointAnnotation()
+    selectedAnnotation.coordinate = coordinate
+    println(selectedAnnotation)
+    println(selectedAnnotation.coordinate.latitude)
+    var geoRegion = CLCircularRegion(center: coordinate, radius: radius, identifier: identifier)
 
+    self.locationManager.startMonitoringForRegion(geoRegion)
+
+    var tabBarController = self.tabBarController as TabBarController
+    println("this is \(tabBarController.viewControllers?.first?.description)")
+    var destinationVC = tabBarController.viewControllers?.first as ViewController
+
+    NSNotificationCenter.defaultCenter().postNotificationName("SELECTED_REMINDER", object: self, userInfo: ["region": geoRegion, "annotation" : selectedAnnotation, "title" : identifier])
+  }
+
+  func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    if editingStyle == .Delete {
+      self.managedObjectContext.deleteObject(self.fetchedResultsController.fetchedObjects![indexPath.row] as Reminder)
+      var error : NSError?
+      self.managedObjectContext.save(&error)}
+  }
+
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+
+    switch type {
+    case .Delete:
+      self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+    default:
+      println("Doing nothing!")
+    }
+  }
 
 } // End

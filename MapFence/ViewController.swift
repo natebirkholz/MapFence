@@ -12,16 +12,28 @@ import CoreLocation
 
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
+/////////////////////////////////
+// MARK: Properties
+/////////////////////////////////
+
   let locationManager = CLLocationManager()
+
   @IBOutlet weak var mapView: MKMapView!
+
+/////////////////////////////////
+// MARK: Lifecycle
+/////////////////////////////////
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+    appDelegate.locationManager = self.locationManager
     self.mapView.delegate = self
     self.locationManager.delegate = self
 
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "addedReminder:", name: "ADDED_REMINDER", object: nil)
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "selectedReminder:", name: "SELECTED_REMINDER", object: nil)
 
     let longPress = UILongPressGestureRecognizer(target: self, action: "didPressLong:")
     self.mapView.addGestureRecognizer(longPress)
@@ -43,12 +55,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     default:
       println("authorization status not found for CLLocationManager.")
     }
-
   }
 
   deinit {
     NSNotificationCenter.defaultCenter().removeObserver(self)
   }
+
+/////////////////////////////////
+// MARK: Observers
+/////////////////////////////////
 
   func addedReminder(notification: NSNotification) {
     println("added reminder")
@@ -64,6 +79,24 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     self.mapView.addOverlay(overlay)
   }
 
+  func selectedReminder(notification: NSNotification) {
+    println("selected reminder")
+    let userInfo = notification.userInfo!
+    let geoRegion = userInfo["region"] as CLCircularRegion
+
+    let annotation = userInfo["annotation"] as MKPointAnnotation
+    let title = userInfo["title"] as String
+    annotation.title = title
+
+
+    let overlay = MKCircle(centerCoordinate: geoRegion.center, radius: geoRegion.radius)
+    self.mapView.addOverlay(overlay)
+  }
+
+/////////////////////////////////
+// MARK: MapView
+/////////////////////////////////
+
   func didPressLong(sender: UILongPressGestureRecognizer) {
 
     if sender.state == UIGestureRecognizerState.Began {
@@ -76,40 +109,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
       self.mapView.addAnnotation(annotationFor)
     }
   }
-
-  func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-    switch status {
-    case .Authorized:
-      println("Case authorized for didChangeAuthorizationStatus")
-    case .AuthorizedWhenInUse:
-      println("Case AuthorizedWhenInUse for didChangeAuthorizationStatus")
-    case .Denied:
-      println("Case Denied for didChangeAuthorizationStatus")
-    case .NotDetermined:
-      println("Case NotDetermined for didChangeAuthorizationStatus")
-    case .Restricted:
-      println("Case Restricted for didChangeAuthorizationStatus")
-    default:
-      println("Dfeault case for didChangeAuthorizationStatus")
-    }
-  }
-
-  func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-    println("Received an update to Locations")
-    if let location = locations.last as? CLLocation {
-      println("Last cordinate received is lat: \(location.coordinate.latitude), long: \(location.coordinate.longitude)")
-    }
-  }
-
-  func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-    println("Entered a region defined as \(region.description)")
-  }
-
-  func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-    println("Exited a region defined as \(region.description)")
-  }
-
-  // MARK: MapView Methods
 
   func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
     let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "ANNOTATION")
@@ -138,7 +137,49 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
   }
 
 
+/////////////////////////////////
+// MARK: LocationManager
+/////////////////////////////////
 
 
-}
+  func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    switch status {
+    case .Authorized:
+      println("Case authorized for didChangeAuthorizationStatus")
+    case .AuthorizedWhenInUse:
+      println("Case AuthorizedWhenInUse for didChangeAuthorizationStatus")
+    case .Denied:
+      println("Case Denied for didChangeAuthorizationStatus")
+    case .NotDetermined:
+      println("Case NotDetermined for didChangeAuthorizationStatus")
+    case .Restricted:
+      println("Case Restricted for didChangeAuthorizationStatus")
+    default:
+      println("Dfeault case for didChangeAuthorizationStatus")
+    }
+  }
+
+  func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    println("Received an update to Locations")
+    if let location = locations.last as? CLLocation {
+      println("Last cordinate received is lat: \(location.coordinate.latitude), long: \(location.coordinate.longitude)")
+    }
+  }
+
+  func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+    println("Entered a region defined as \(region.description)")
+    if (UIApplication.sharedApplication().applicationState == UIApplicationState.Background) {
+      var notification = UILocalNotification()
+      notification.alertAction = "Last place on earth!"
+      notification.alertBody = "Note: not actually the last place on earth."
+      notification.fireDate = NSDate()
+      UIApplication.sharedApplication().scheduleLocalNotification(notification)
+    }
+  }
+
+  func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+    println("Exited a region defined as \(region.description)")
+  }
+
+} // End
 
