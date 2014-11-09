@@ -123,7 +123,7 @@ class ReminderTableViewController: UIViewController, UITableViewDelegate, UITabl
     case .Delete:
       self.tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
     default:
-      println("Doing nothing!")
+      println("hiya")
     }
   }
 
