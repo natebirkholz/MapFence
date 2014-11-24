@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LmS-8G-Ql7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B23" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LmS-8G-Ql7">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -21,10 +21,18 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jej-3c-PLE">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PJ8-4I-kg6">
+                                <rect key="frame" x="289" y="521" width="22" height="22"/>
+                                <connections>
+                                    <action selector="buttonEd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rEb-UH-cYa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PJ8-4I-kg6" secondAttribute="bottom" constant="8" id="3lU-BD-Xks"/>
                             <constraint firstItem="Jej-3c-PLE" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="4yv-oa-WJR"/>
+                            <constraint firstAttribute="centerX" secondItem="PJ8-4I-kg6" secondAttribute="centerX" id="OzA-kz-rDE"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Jej-3c-PLE" secondAttribute="bottom" id="WQc-YT-84B"/>
                             <constraint firstItem="Jej-3c-PLE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="bZV-dd-Ihs"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Jej-3c-PLE" secondAttribute="trailing" constant="-16" id="qRJ-eu-cl2"/>

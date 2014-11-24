@@ -69,12 +69,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     println("added reminder")
     let userInfo = notification.userInfo!
     let geoRegion = userInfo["region"] as CLCircularRegion
-
     let annotation = userInfo["annotation"] as MKPointAnnotation
     let title = userInfo["title"] as String
     annotation.title = title
-
-
     let overlay = MKCircle(centerCoordinate: geoRegion.center, radius: geoRegion.radius)
     self.mapView.addOverlay(overlay)
   }
@@ -83,12 +80,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     println("selected reminder")
     let userInfo = notification.userInfo!
     let geoRegion = userInfo["region"] as CLCircularRegion
-
     let annotation = userInfo["annotation"] as MKPointAnnotation
     let title = userInfo["title"] as String
     annotation.title = title
-
-
     let overlay = MKCircle(centerCoordinate: geoRegion.center, radius: geoRegion.radius)
     self.mapView.addOverlay(overlay)
   }
@@ -96,6 +90,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 /////////////////////////////////
 // MARK: MapView
 /////////////////////////////////
+
+  @IBAction func buttonEd(sender: AnyObject) {
+    var regionFrom = self.mapView.region
+    var regionRect = self.mapView.visibleMapRect
+    var halfLat = regionFrom.span.latitudeDelta / 2
+    var halfLong = regionFrom.span.longitudeDelta / 2
+    var bottomLat = regionFrom.center.latitude - halfLat
+    var leftLong = regionFrom.center.longitude - halfLong
+    var newCenter = CLLocationCoordinate2D(latitude: bottomLat, longitude: leftLong)
+    self.mapView.setCenterCoordinate(newCenter, animated: true)
+  }
 
   func didPressLong(sender: UILongPressGestureRecognizer) {
 
@@ -107,6 +112,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
       annotationFor.coordinate = touchCoordinateFor
       annotationFor.title = "Add Reminder"
       self.mapView.addAnnotation(annotationFor)
+      var regionFrom = self.mapView.region
+      var regionRect = self.mapView.visibleMapRect
+      println("Region is \(regionFrom)")
+      println("Region Center is \(regionFrom.center.latitude) and \(regionFrom.center.longitude)")
+      println("Region span is \(regionFrom.span.latitudeDelta) and \(regionFrom.span.longitudeDelta)")
+      println("MapRect is \(regionRect.origin) with \(regionRect.size.height)")
     }
   }
 
@@ -116,7 +127,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     annotationView.canShowCallout = true
     let addButton = UIButton.buttonWithType(UIButtonType.ContactAdd) as UIButton
     annotationView.rightCalloutAccessoryView = addButton
-
     return annotationView
   }
 
@@ -136,11 +146,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     return renderer
   }
 
-
 /////////////////////////////////
 // MARK: LocationManager
 /////////////////////////////////
-
 
   func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
     switch status {

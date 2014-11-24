@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
     if (UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))) {
       println("responding")
       let types = UIUserNotificationType.Alert | UIUserNotificationType.Badge | UIUserNotificationType.Sound
@@ -26,10 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     } else {
       println("nope")
     }
-
-
-
-
     return true
   }
 
@@ -128,6 +123,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
           }
       }
   }
-
-}
+} // End
 

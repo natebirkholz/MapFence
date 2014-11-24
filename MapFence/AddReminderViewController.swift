@@ -48,7 +48,6 @@ class AddReminderViewController: UIViewController, UITextFieldDelegate, MKMapVie
     self.managedObjectContext = appDelegate.managedObjectContext
     self.titleTextField.delegate = self
     self.mapView.delegate =  self
-
     NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateRadius:", name: "SLID_SLIDER", object: nil)
 
     self.radiusSlider.minimumValue = 10
@@ -84,18 +83,15 @@ class AddReminderViewController: UIViewController, UITextFieldDelegate, MKMapVie
       annotationFor.title = "Add Reminder"
       self.annotationForView = annotationFor as MKPointAnnotation!
       self.mapView.addAnnotation(annotationFor)
-
     } else {
       self.titleTextField.text = self.selectedReminder?.reminderName as String!
     }
-
     self.updateOverlay()
     self.mapView.addOverlay(self.overlayCircle)
   }
 
   override func didReceiveMemoryWarning() {
       super.didReceiveMemoryWarning()
-      // Dispose of any resources that can be recreated.
   }
 
   deinit {
@@ -128,7 +124,6 @@ class AddReminderViewController: UIViewController, UITextFieldDelegate, MKMapVie
     let userInfo = notification.userInfo!
     self.mapView.removeOverlays(self.mapView.overlays)
     self.updateOverlay()
-
     self.mapView.addOverlay(self.overlayCircle)
   }
 
@@ -146,9 +141,7 @@ class AddReminderViewController: UIViewController, UITextFieldDelegate, MKMapVie
     let radius = self.radius
     let date = self.dateFor as NSDate!
     let identifier = self.titleTextField.text
-      println("identifier is \(identifier)")
     var geoRegion = CLCircularRegion(center: selectedAnnotation.coordinate, radius: radius, identifier: identifier)
-
     self.locationManager.startMonitoringForRegion(geoRegion)
     NSNotificationCenter.defaultCenter().postNotificationName("ADDED_REMINDER", object: self, userInfo: ["region": geoRegion, "annotation" : selectedAnnotation, "title" : identifier])
 
@@ -167,7 +160,6 @@ class AddReminderViewController: UIViewController, UITextFieldDelegate, MKMapVie
     if error != nil {
       println(error?.localizedDescription)
     }
-
     self.dismissViewControllerAnimated(true, completion: nil)
   }
 

@@ -16,5 +16,4 @@ class Reminder: NSManagedObject {
     @NSManaged var reminderRadius: NSNumber
     @NSManaged var reminderLat: Double
     @NSManaged var reminderLon: Double
-
-}
+} // End
